@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="ロンテン先輩（フクロウ）">
+  <g stroke="#1c2430" stroke-width="4" stroke-linejoin="round" stroke-linecap="round">
+    <ellipse cx="100" cy="189" rx="52" ry="7" fill="#1c2430" opacity=".12" stroke="none"/>
+    <path d="M56 70 L50 36 L78 54 Z" fill="#7b5bb5"/>
+    <path d="M144 70 L150 36 L122 54 Z" fill="#7b5bb5"/>
+    <path d="M100 42 Q154 42 152 118 Q150 182 100 184 Q50 182 48 118 Q46 42 100 42 Z" fill="#7b5bb5"/>
+    <path d="M100 112 Q130 114 130 148 Q128 176 100 176 Q72 176 70 148 Q70 114 100 112 Z" fill="#e9e1f5" stroke="none"/>
+    <path d="M86 134 q6 5 12 0 M102 134 q6 5 12 0 M94 150 q6 5 12 0" fill="none" stroke="#b9a6d8" stroke-width="3"/>
+    <circle cx="78" cy="86" r="21" fill="#fffdf8"/>
+    <circle cx="122" cy="86" r="21" fill="#fffdf8"/>
+    <path d="M99 84 h2" stroke-width="5"/>
+    <circle cx="80" cy="88" r="7.5" fill="#1c2430" stroke="none"/><circle cx="120" cy="88" r="7.5" fill="#1c2430" stroke="none"/>
+    <circle cx="82.2" cy="85.6" r="2.2" fill="#fff" stroke="none"/><circle cx="122.2" cy="85.6" r="2.2" fill="#fff" stroke="none"/>
+    <path d="M94 104 L106 104 L100 116 Z" fill="#f2a33a" stroke-width="3"/>
+    <path d="M86 184 v4 M80 186 h12 M114 184 v4 M108 186 h12" stroke="#f2a33a" stroke-width="4"/>
+    <rect x="134" y="104" width="52" height="38" rx="4" fill="#fffdf8" stroke-width="3.5"/>
+    <text x="139" y="117" font-family="Helvetica, Arial, sans-serif" font-weight="800" font-size="10" fill="#7b5bb5" stroke="none">1</text>
+    <text x="139" y="128" font-family="Helvetica, Arial, sans-serif" font-weight="800" font-size="10" fill="#7b5bb5" stroke="none">2</text>
+    <text x="139" y="139" font-family="Helvetica, Arial, sans-serif" font-weight="800" font-size="10" fill="#7b5bb5" stroke="none">3</text>
+    <path d="M148 114 h28 M148 125 h22 M148 136 h26" stroke-width="2.5"/>
+    <path d="M142 146 Q140 158 136 166" fill="none" stroke-width="3.5"/>
+    <path d="M150 150 Q136 150 132 160 Q140 166 152 158 Z" fill="#7b5bb5"/>
+  </g>
+</svg>

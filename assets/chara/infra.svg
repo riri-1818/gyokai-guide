@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="トメナイ（電柱）">
+  <g stroke="#1c2430" stroke-width="4" stroke-linejoin="round" stroke-linecap="round">
+    <ellipse cx="100" cy="189" rx="44" ry="7" fill="#1c2430" opacity=".12" stroke="none"/>
+    <path d="M14 40 Q40 52 56 52 M186 40 Q160 52 144 52" fill="none" stroke-width="2.5"/>
+    <path d="M14 62 Q40 72 56 72 M186 62 Q160 72 144 72" fill="none" stroke-width="2.5"/>
+    <rect x="76" y="30" width="48" height="158" rx="10" fill="#cfd6de"/>
+    <rect x="40" y="46" width="120" height="12" rx="4" fill="#3d6f9e"/>
+    <circle cx="56" cy="44" r="6" fill="#fffdf8" stroke-width="3"/><circle cx="144" cy="44" r="6" fill="#fffdf8" stroke-width="3"/>
+    <rect x="48" y="66" width="104" height="10" rx="4" fill="#3d6f9e"/>
+    <circle cx="58" cy="64" r="5" fill="#fffdf8" stroke-width="3"/><circle cx="142" cy="64" r="5" fill="#fffdf8" stroke-width="3"/>
+    <path d="M76 30 Q76 14 100 14 Q124 14 124 30 Z" fill="#3d6f9e"/>
+    <path d="M70 30 H130" stroke-width="5"/>
+    <circle cx="90" cy="104" r="5.5" fill="#1c2430" stroke="none"/><circle cx="110" cy="104" r="5.5" fill="#1c2430" stroke="none"/>
+    <circle cx="92.2" cy="101.6" r="2.2" fill="#fff" stroke="none"/><circle cx="112.2" cy="101.6" r="2.2" fill="#fff" stroke="none"/>
+    <path d="M86 92 L96 96 M114 92 L104 96" stroke-width="3.5"/>
+    <ellipse cx="84" cy="118" rx="6" ry="4" fill="#f4a3a0" stroke="none" opacity=".85"/><ellipse cx="116" cy="118" rx="6" ry="4" fill="#f4a3a0" stroke="none" opacity=".85"/>
+    <path d="M94 120 Q100 125 106 120" fill="none" stroke-width="3.5"/>
+    <path d="M76 132 Q52 128 36 112" fill="none"/>
+    <circle cx="32" cy="108" r="8" fill="#cfd6de"/>
+    <path d="M124 132 Q148 128 164 112" fill="none"/>
+    <circle cx="168" cy="108" r="8" fill="#cfd6de"/>
+    <path d="M84 150 h32 M84 164 h32" stroke="#a9b3be" stroke-width="3"/>
+  </g>
+</svg>

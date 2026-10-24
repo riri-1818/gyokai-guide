@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="マネ吉（招き猫）">
+  <g stroke="#1c2430" stroke-width="4" stroke-linejoin="round" stroke-linecap="round">
+    <ellipse cx="100" cy="188" rx="58" ry="7" fill="#1c2430" opacity=".12" stroke="none"/>
+    <path d="M56 184 Q48 122 100 114 Q152 122 144 184 Z" fill="#fffdf8"/>
+    <path d="M132 136 Q146 110 148 88 L166 84 Q164 116 146 142 Z" fill="#fffdf8"/>
+    <circle cx="157" cy="76" r="15" fill="#fffdf8"/>
+    <path d="M150 66 v8 M157 64 v9 M164 66 v8" stroke-width="2.5"/>
+    <path d="M56 58 L60 22 L90 44 Z" fill="#fffdf8"/>
+    <path d="M144 58 L140 22 L110 44 Z" fill="#fffdf8"/>
+    <path d="M63 50 L65 32 L80 44 Z" fill="#f4b5b0" stroke="none"/>
+    <path d="M137 50 L135 32 L120 44 Z" fill="#f4b5b0" stroke="none"/>
+    <ellipse cx="100" cy="80" rx="52" ry="45" fill="#fffdf8"/>
+    <path d="M70 46 Q84 36 98 42 Q92 60 72 62 Q64 56 70 46 Z" fill="#2f4f96" stroke="none"/>
+    <path d="M128 44 Q140 46 144 58 Q134 62 126 54 Z" fill="#e9a23b" stroke="none"/>
+    <path d="M74 82 Q81 74 88 82 M112 82 Q119 74 126 82" fill="none" stroke-width="4.5"/>
+    <ellipse cx="72" cy="96" rx="9" ry="5.5" fill="#f4a3a0" stroke="none" opacity=".8"/>
+    <ellipse cx="128" cy="96" rx="9" ry="5.5" fill="#f4a3a0" stroke="none" opacity=".8"/>
+    <path d="M96 90 h8 l-4 5 Z" fill="#e66b72" stroke-width="2"/>
+    <path d="M90 99 Q95 105 100 99 Q105 105 110 99" fill="none" stroke-width="3"/>
+    <path d="M60 88 L44 84 M60 95 L44 97 M140 88 L156 84 M140 95 L156 97" stroke-width="2.5"/>
+    <path d="M60 118 Q100 134 140 118 L142 128 Q100 146 58 128 Z" fill="#2f4f96"/>
+    <circle cx="100" cy="140" r="8" fill="#f2c94c"/>
+    <path d="M94 140 h12" stroke-width="2.5"/>
+    <ellipse cx="84" cy="160" rx="24" ry="15" fill="#f2c94c"/>
+    <ellipse cx="84" cy="160" rx="17" ry="9.5" fill="none" stroke-width="2.5"/>
+    <text x="84" y="166" font-family="Hiragino Mincho ProN, serif" font-weight="700" font-size="15" text-anchor="middle" fill="#1c2430" stroke="none">利</text>
+    <circle cx="62" cy="158" r="12" fill="#fffdf8"/>
+  </g>
+</svg>

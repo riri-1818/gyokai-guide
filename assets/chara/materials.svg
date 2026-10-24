@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="原田ザイ（鉄のかたまり）">
+  <g stroke="#1c2430" stroke-width="4" stroke-linejoin="round" stroke-linecap="round">
+    <ellipse cx="100" cy="189" rx="62" ry="7" fill="#1c2430" opacity=".12" stroke="none"/>
+    <path d="M44 72 L64 52 H156 L156 164 L136 184 H44 Z" fill="#8b98a6"/>
+    <path d="M44 72 L64 52 H156 L136 72 Z" fill="#b6c0ca"/>
+    <path d="M136 72 L156 52 V164 L136 184 Z" fill="#6c7886"/>
+    <rect x="44" y="72" width="92" height="112" fill="#8b98a6"/>
+    <path d="M44 86 H136 V100 H44 Z" fill="#c8733a"/>
+    <path d="M136 86 L156 70 V84 L136 100 Z" fill="#a85d2b"/>
+    <path d="M150 80 Q172 70 180 82 Q168 84 160 92 Z M150 82 Q166 98 176 100 Q164 106 152 94 Z" fill="#c8733a" stroke-width="3"/>
+    <path d="M66 116 h18 M96 116 h18" stroke-width="5"/>
+    <path d="M64 108 L84 112 M116 108 L96 112" stroke-width="4"/>
+    <path d="M80 134 Q90 130 100 134" fill="none" stroke-width="4"/>
+    <path d="M44 142 Q24 150 38 166 L96 164 Q104 156 96 150 Z" fill="#8b98a6"/>
+    <path d="M136 142 Q156 150 142 166 L84 166 Q76 158 84 152 Z" fill="#8b98a6"/>
+    <circle cx="92" cy="158" r="8" fill="#8b98a6" stroke-width="3"/>
+    <circle cx="88" cy="160" r="8" fill="#8b98a6" stroke-width="3"/>
+  </g>
+</svg>

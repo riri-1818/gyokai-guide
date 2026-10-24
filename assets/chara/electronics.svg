@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="電司（電源プラグ）">
+  <g stroke="#1c2430" stroke-width="4" stroke-linejoin="round" stroke-linecap="round">
+    <ellipse cx="100" cy="189" rx="50" ry="7" fill="#1c2430" opacity=".12" stroke="none"/>
+    <path d="M100 168 Q100 186 80 186 Q56 186 48 172" fill="none" stroke="#1c2430" stroke-width="9"/>
+    <path d="M100 168 Q100 186 80 186 Q56 186 48 172" fill="none" stroke="#e3b52c" stroke-width="3"/>
+    <rect x="80" y="20" width="12" height="34" rx="3" fill="#cfd6de"/>
+    <rect x="108" y="20" width="12" height="34" rx="3" fill="#cfd6de"/>
+    <path d="M58 64 Q58 48 76 48 H124 Q142 48 142 64 V128 Q142 170 100 172 Q58 170 58 128 Z" fill="#e3b52c"/>
+    <path d="M50 96 Q50 40 100 40 Q150 40 150 96" fill="none" stroke-width="7"/>
+    <rect x="40" y="86" width="22" height="34" rx="9" fill="#1c2430"/>
+    <rect x="138" y="86" width="22" height="34" rx="9" fill="#1c2430"/>
+    <rect x="44" y="92" width="10" height="22" rx="4" fill="#e3b52c" stroke="none"/>
+    <rect x="146" y="92" width="10" height="22" rx="4" fill="#e3b52c" stroke="none"/>
+    <circle cx="84" cy="104" r="6.5" fill="#1c2430" stroke="none"/><circle cx="116" cy="104" r="6.5" fill="#1c2430" stroke="none"/>
+    <circle cx="86.2" cy="101.6" r="2.2" fill="#fff" stroke="none"/><circle cx="118.2" cy="101.6" r="2.2" fill="#fff" stroke="none"/>
+    <ellipse cx="76" cy="120" rx="8" ry="5" fill="#f4a3a0" stroke="none" opacity=".85"/><ellipse cx="124" cy="120" rx="8" ry="5" fill="#f4a3a0" stroke="none" opacity=".85"/>
+    <path d="M88 122 Q100 134 112 122" fill="none" stroke-width="4"/>
+    <path d="M160 34 l3 8 8 3 -8 3 -3 8 -3 -8 -8 -3 8 -3 Z" fill="#fff4c2" stroke-width="2.5"/>
+    <path d="M30 40 l2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2 Z" fill="#fff4c2" stroke-width="2"/>
+  </g>
+</svg>

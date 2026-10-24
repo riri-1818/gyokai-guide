@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="マイニチ（おにぎり）">
+  <g stroke="#1c2430" stroke-width="4" stroke-linejoin="round" stroke-linecap="round">
+    <ellipse cx="100" cy="189" rx="58" ry="7" fill="#1c2430" opacity=".12" stroke="none"/>
+    <path d="M100 30 Q112 30 120 44 L164 132 Q174 170 140 176 H60 Q26 170 36 132 L80 44 Q88 30 100 30 Z" fill="#fffdf8"/>
+    <path d="M66 140 H134 V176 H66 Z" fill="#2c4a3a"/>
+    <path d="M66 176 H134" stroke-width="4"/>
+    <circle cx="112" cy="58" r="3" fill="#e9e3d2" stroke="none"/><circle cx="84" cy="70" r="3" fill="#e9e3d2" stroke="none"/><circle cx="128" cy="96" r="3" fill="#e9e3d2" stroke="none"/>
+    <path d="M78 98 Q85 92 92 98 M108 98 Q115 92 122 98" fill="none" stroke-width="4.5"/>
+    <ellipse cx="72" cy="112" rx="8" ry="5" fill="#f4a3a0" stroke="none" opacity=".85"/><ellipse cx="128" cy="112" rx="8" ry="5" fill="#f4a3a0" stroke="none" opacity=".85"/>
+    <path d="M92 118 Q100 112 108 118" fill="none" stroke-width="4"/>
+    <path d="M140 60 Q146 70 140 76 Q134 70 140 60 Z" fill="#9fd3f0" stroke-width="2.5"/>
+    <path d="M44 150 Q26 150 30 132" fill="none"/>
+    <circle cx="31" cy="126" r="7" fill="#fffdf8"/>
+    <path d="M156 150 Q174 150 170 132" fill="none"/>
+    <circle cx="169" cy="126" r="7" fill="#fffdf8"/>
+  </g>
+</svg>

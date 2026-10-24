@@ -216,4 +216,18 @@
       try { localStorage.removeItem(KEY); } catch (e) { /* 何もしない */ }
     });
   }
+
+  // ---- キャラの印鑑：画面に入ったら押す ----
+  var seals = document.querySelectorAll('.seal');
+  if ('IntersectionObserver' in window && seals.length) {
+    document.documentElement.classList.add('js');
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    seals.forEach(function (s) { io.observe(s); });
+  }
+
+  // ---- お問い合わせの送信後 ----
+  var sent = document.getElementById('sent-msg');
+  if (sent && /[?&]sent=1/.test(location.search)) sent.hidden = false;
 })();

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="ツナグ（ケーブルのコネクタ）">
+  <g stroke="#1c2430" stroke-width="4" stroke-linejoin="round" stroke-linecap="round">
+    <ellipse cx="100" cy="189" rx="48" ry="7" fill="#1c2430" opacity=".12" stroke="none"/>
+    <path d="M100 176 Q100 188 124 188 Q160 188 170 168 Q178 150 164 140" fill="none" stroke="#1c2430" stroke-width="9"/>
+    <path d="M100 176 Q100 188 124 188 Q160 188 170 168 Q178 150 164 140" fill="none" stroke="#2fa6c2" stroke-width="3"/>
+    <rect x="62" y="70" width="76" height="98" rx="12" fill="#2fa6c2"/>
+    <rect x="86" y="164" width="28" height="14" rx="3" fill="#1f7c91"/>
+    <rect x="70" y="40" width="60" height="36" rx="5" fill="#e6eef2"/>
+    <path d="M80 48 v14 M88 48 v14 M96 48 v14 M104 48 v14 M112 48 v14 M120 48 v14" stroke="#d4a72c" stroke-width="3"/>
+    <path d="M86 76 L90 92 H110 L114 76" fill="#e6eef2" stroke-width="3"/>
+    <path d="M76 26 Q100 6 124 26 M84 34 Q100 22 116 34" fill="none" stroke="#2fa6c2" stroke-width="4"/>
+    <circle cx="100" cy="38" r="0" />
+    <circle cx="84" cy="112" r="6.5" fill="#1c2430" stroke="none"/><circle cx="116" cy="112" r="6.5" fill="#1c2430" stroke="none"/>
+    <circle cx="86.2" cy="109.6" r="2.2" fill="#fff" stroke="none"/><circle cx="118.2" cy="109.6" r="2.2" fill="#fff" stroke="none"/>
+    <ellipse cx="74" cy="128" rx="8" ry="5" fill="#f4a3a0" stroke="none" opacity=".85"/><ellipse cx="126" cy="128" rx="8" ry="5" fill="#f4a3a0" stroke="none" opacity=".85"/>
+    <path d="M90 126 Q100 136 110 126" fill="none" stroke-width="4"/>
+    <path d="M62 128 Q46 130 40 116" fill="none"/>
+    <circle cx="38" cy="110" r="7" fill="#2fa6c2"/>
+    <path d="M138 128 Q154 134 162 124" fill="none"/>
+    <circle cx="165" cy="120" r="7" fill="#2fa6c2"/>
+  </g>
+</svg>

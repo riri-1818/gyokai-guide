@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="街田ツクル（ビル）">
+  <g stroke="#1c2430" stroke-width="4" stroke-linejoin="round" stroke-linecap="round">
+    <ellipse cx="100" cy="189" rx="52" ry="7" fill="#1c2430" opacity=".12" stroke="none"/>
+    <rect x="58" y="56" width="84" height="128" rx="6" fill="#8fb05a"/>
+    <rect x="70" y="128" width="16" height="14" rx="2" fill="#e8f3d6" stroke-width="3"/>
+    <rect x="92" y="128" width="16" height="14" rx="2" fill="#e8f3d6" stroke-width="3"/>
+    <rect x="114" y="128" width="16" height="14" rx="2" fill="#e8f3d6" stroke-width="3"/>
+    <rect x="70" y="150" width="16" height="14" rx="2" fill="#e8f3d6" stroke-width="3"/>
+    <rect x="114" y="150" width="16" height="14" rx="2" fill="#e8f3d6" stroke-width="3"/>
+    <path d="M92 184 V156 Q100 150 108 156 V184" fill="#5f7d33" stroke-width="3"/>
+    <path d="M56 58 Q56 22 100 22 Q144 22 144 58 Z" fill="#f2c94c"/>
+    <path d="M48 58 H152" stroke-width="6"/>
+    <path d="M100 22 V40" stroke-width="3"/>
+    <circle cx="84" cy="86" r="6.5" fill="#1c2430" stroke="none"/><circle cx="116" cy="86" r="6.5" fill="#1c2430" stroke="none"/>
+    <circle cx="86.2" cy="83.6" r="2.2" fill="#fff" stroke="none"/><circle cx="118.2" cy="83.6" r="2.2" fill="#fff" stroke="none"/>
+    <ellipse cx="74" cy="102" rx="8" ry="5" fill="#f4a3a0" stroke="none" opacity=".85"/><ellipse cx="126" cy="102" rx="8" ry="5" fill="#f4a3a0" stroke="none" opacity=".85"/>
+    <path d="M90 102 Q100 112 110 102" fill="none" stroke-width="4"/>
+    <path d="M142 120 Q160 118 162 102" fill="none"/>
+    <g transform="rotate(-24 166 92)">
+      <rect x="152" y="74" width="28" height="40" rx="4" fill="#e3effa" stroke-width="3"/>
+      <path d="M158 84 h16 M158 92 h10 M158 100 h16" stroke="#4b7bb5" stroke-width="2.5"/>
+    </g>
+    <path d="M58 140 Q40 140 40 156" fill="none"/>
+    <circle cx="40" cy="162" r="7" fill="#8fb05a"/>
+  </g>
+</svg>

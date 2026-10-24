@@ -10,12 +10,22 @@ from content.grp_b import ELECTRONICS, MATERIALS, FOOD, REALESTATE
 from content.grp_c import INFRA, MEDIA, TRAVEL, HR
 from content import index as IX
 from content.common import YUHO_COLS, GOAL_COLS
+from content.chara import CHARA
+from content import partners as PT
+for _k, _c in CHARA.items():
+    _c['id'] = _k
 
 ROOT = Path(__file__).parent
 OUT = ROOT / 'docs'
 PAGES = [FINANCE, TRADING, CONSULTING, IT, AUTO, ELECTRONICS, MATERIALS, FOOD, REALESTATE, INFRA, MEDIA, TRAVEL, HR]
 SITE = '業界研究ガイド'
 ASOF = '2026年10月21日時点'
+BASE = 'https://riri-1818.github.io/gyokai-guide/'
+
+# 広告とSearch Console。審査に申し込んだら、もらったIDをここに入れて build し直す。
+ADSENSE_CLIENT = ''   # 例: 'ca-pub-1234567890123456'（空なら広告のコードは出さない）
+SEARCH_CONSOLE = ''   # Search Console の「HTMLタグ」の content の値
+WEB3FORMS_KEY = '69066896-0033-4d7f-86ce-89e1c2710472'  # ワーホリ実務ノートと同じ。送信は本人のメールに届く
 
 
 # ---------- 文字の整形 ----------
@@ -188,6 +198,53 @@ def block(b, page):
     raise ValueError(t)
 
 
+# ---------- キャラクター ----------
+def seal(c, cls=''):
+    """キャラのイラスト（assets/chara/<業界id>.svg）。"""
+    return f'<span class="seal {cls}" aria-hidden="true"><img src="assets/chara/{c["id"]}.svg" alt="" width="200" height="200" loading="lazy"></span>'
+
+
+def chara_card(pid):
+    c = CHARA[pid]
+    prof = ''.join(f'<div><dt>{md(k)}</dt><dd>{md(v)}</dd></div>' for k, v in c['profile'])
+    daily = ''.join(f'<li><b>{md(t)}</b><p>{md(d)}</p></li>' for t, d in c['daily'])
+    return (f'<section class="chara" style="--h:{c["hue"]}" aria-label="この業界のキャラクター">'
+            f'<div class="ch-top">{seal(c)}<div class="ch-id"><p class="ch-role">{md(c["role"])}</p>'
+            f'<p class="ch-name">{md(c["name"])}<small>{md(c["kana"])}</small></p></div></div>'
+            f'<p class="ch-intro">{md(c["intro"])}</p>'
+            f'<dl class="ch-prof">{prof}</dl>'
+            f'<h2 class="ch-daily-h">キミの毎日にいる{md(c["name"])}</h2><ol class="ch-daily">{daily}</ol></section>')
+
+
+def say(pid, sid):
+    c = CHARA[pid]
+    line = c['says'].get(sid)
+    if not line:
+        return ''
+    return f'<div class="say" style="--h:{c["hue"]}">{seal(c, "sm")}<p><b>{md(c["name"])}</b>{md(line)}</p></div>'
+
+
+# ---------- 無料の相談先 ----------
+def soudan():
+    cards = ''
+    for x in PT.SOUDAN:
+        pr = '<span class="pr">PR</span>' if x['pr'] else ''
+        link = (f'<a class="sd-link" href="{html.escape(x["url"])}" target="_blank" rel="noopener{" sponsored" if x["pr"] else ""}">{md(x["label"])}</a>'
+                if x['url'] else '')
+        note = f'<p class="sd-note">{md(x["note"])}</p>' if x['note'] else ''
+        cards += (f'<article class="sd-card"><h3>{md(x["name"])}{pr}</h3><p class="sd-by">{md(x["by"])}</p>'
+                  f'<p>{md(x["what"])}</p>{note}{link}</article>')
+    return (f'<div class="sd-grid">{cards}</div>'
+            f'<div class="callout"><strong>エージェントはなぜ無料？</strong><p>{md(PT.WHY_FREE)}</p></div>'
+            f'<p class="note">学生が無料で使えて、人に相談できるところだけを載せています。各公式ページの記載は{PT.CHECKED}に確認しました。'
+            f'料金や対象は変わることがあるので、申し込む前に公式ページで確かめてください。</p>')
+
+
+def soudan_sec(no):
+    return (f'<section id="soudan" class="sec"><div class="sec-h"><span class="sec-no">{no}</span>'
+            f'<h2>ひとりで抱えないで：無料で相談できる場所</h2></div>{soudan()}</section>')
+
+
 # ---------- 枠 ----------
 def sidebar(current, sections):
     items = f'<li><a href="index.html"{" aria-current=page" if current == "index" else ""}>総まとめ</a>'
@@ -200,11 +257,20 @@ def sidebar(current, sections):
         if cur:
             items += '<ul>' + ''.join(f'<li><a href="#{i}">{n}</a></li>' for i, n in sections) + '</ul>'
         items += '</li>'
+    items += (f'<li class="side-meta"><a href="about.html"{" aria-current=page" if current == "about" else ""}>運営者・お問い合わせ</a></li>'
+              f'<li class="side-meta"><a href="privacy.html"{" aria-current=page" if current == "privacy" else ""}>プライバシーポリシー</a></li>')
     return f'<nav class="side" id="side" aria-label="ページ一覧"><p class="side-h">13業界</p><ul>{items}</ul></nav>'
 
 
 def shell(current, title, desc, sections, main):
     full = SITE if current == 'index' else f'{title}｜{SITE}'
+    url = '' if current == 'index' else f'{current}.html'
+    extra_head = ''
+    if SEARCH_CONSOLE:
+        extra_head += f'<meta name="google-site-verification" content="{SEARCH_CONSOLE}">\n'
+    if ADSENSE_CLIENT:
+        extra_head += (f'<meta name="google-adsense-account" content="{ADSENSE_CLIENT}">\n'
+                       f'<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={ADSENSE_CLIENT}" crossorigin="anonymous"></script>\n')
     return f'''<!doctype html>
 <html lang="ja">
 <head>
@@ -212,8 +278,9 @@ def shell(current, title, desc, sections, main):
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{html.escape(full)}</title>
 <meta name="description" content="{html.escape(desc)}">
-<meta name="robots" content="noindex">
-<meta property="og:title" content="{html.escape(full)}">
+<link rel="canonical" href="{BASE}{url}">
+<meta property="og:url" content="{BASE}{url}">
+{extra_head}<meta property="og:title" content="{html.escape(full)}">
 <meta property="og:description" content="{html.escape(desc)}">
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -233,6 +300,8 @@ def shell(current, title, desc, sections, main):
 <footer class="foot">
   <p class="warn"><strong>注意</strong>：数字は各ページに書いた出典の時点のものです。面接で使う前に、必ず最新の決算資料で確認してください。</p>
   <p class="asof">{ASOF}の情報をもとに作成</p>
+  <p class="ad-note">このサイトは広告を掲載しています。紹介料を受け取るリンクには「PR」と表示します。</p>
+  <nav class="foot-links" aria-label="サイトについて"><a href="about.html">運営者・お問い合わせ</a><a href="privacy.html">プライバシーポリシー・免責事項</a></nav>
 </footer>
 </main>
 </div>
@@ -243,13 +312,14 @@ def shell(current, title, desc, sections, main):
 
 
 def page_html(p, i):
-    secs = [(s['id'], s['nav']) for s in p['sections']] + [('sources', '出典')]
+    secs = [(s['id'], s['nav']) for s in p['sections']] + [('soudan', '無料の相談先'), ('sources', '出典')]
     toc = ''.join(f'<a href="#{i_}">{n}</a>' for i_, n in secs)
     body = ''
     for n, s in enumerate(p['sections'], 1):
         inner = ''.join(block(b, p) for b in s['blocks'])
         body += (f'<section id="{s["id"]}" class="sec"><div class="sec-h"><span class="sec-no">{n:02d}</span>'
-                 f'<h2>{md(s["title"])}</h2></div>{inner}</section>')
+                 f'<h2>{md(s["title"])}</h2></div>{say(p["id"], s["id"])}{inner}</section>')
+    body += soudan_sec(f'{len(p["sections"]) + 1:02d}')
     src = ''.join(f'<li><a href="{html.escape(u)}" target="_blank" rel="noopener">{md(t)}</a></li>' for t, u in p['sources'])
     body += f'<section id="sources" class="sec"><div class="sec-h"><span class="sec-no">出典</span><h2>出典</h2></div><ul class="sources">{src}</ul></section>'
     prev = PAGES[i - 1] if i > 0 else None
@@ -263,12 +333,12 @@ def page_html(p, i):
     main = (f'<header class="hero"><p class="crumb"><a href="index.html">総まとめ</a> › {i + 1:02d} / 13</p>'
             f'<h1>{md(p["title"])}</h1><p class="catch"><span class="mark">{md(p["catch"])}</span></p>'
             f'<p class="lead">{md(p["lead"])}</p>'
-            f'<nav class="toc" aria-label="このページの目次">{toc}</nav></header>{body}{pn}')
+            f'<nav class="toc" aria-label="このページの目次">{toc}</nav></header>{chara_card(p["id"])}{body}{pn}')
     return shell(p['id'], p['title'], p['lead'][:110], secs, main)
 
 
 def index_html():
-    secs = [('waves', '5つの波'), ('list', '業界一覧'), ('companies', '40社の有報'), ('howto', '使い方')]
+    secs = [('waves', '5つの波'), ('list', '業界一覧'), ('companies', '40社の有報'), ('howto', '使い方'), ('soudan', '無料の相談先')]
     waves = ''.join(
         f'<article class="wave"><h3>{md(n)}</h3><p>{md(w)}</p>'
         f'<div class="w up"><span class="lbl">追い風の業界</span><p>{md(u)}</p></div>'
@@ -286,7 +356,9 @@ def index_html():
               + ''.join(f'<th scope="col">{w}</th>' for w in IX.MATRIX_WAVES) + f'</tr></thead><tbody>{mrows}</tbody></table></div>'
               '<div class="legend"><span><span class="tag up">追い風</span> 稼ぎやすくなる</span><span><span class="tag down">逆風</span> 苦しくなる</span>'
               '<span><span class="tag both">両面</span> 良い面と悪い面がある</span><span>空欄は影響が小さい組み合わせ</span></div>')
-    cards = ''.join(f'<a class="ind-card" href="{p["id"]}.html"><span class="ic-no">{i:02d}</span><b>{short(p)}</b>'
+    cards = ''.join(f'<a class="ind-card" href="{p["id"]}.html" style="--h:{CHARA[p["id"]]["hue"]}">'
+                    f'<span class="ic-head">{seal(CHARA[p["id"]], "sm")}<span class="ic-who"><span class="ic-no">{i:02d}</span>'
+                    f'<span class="ic-name">{md(CHARA[p["id"]]["name"])}</span><span class="ic-role">{md(CHARA[p["id"]]["role"])}</span></span></span><b>{short(p)}</b>'
                     f'<span class="ic-catch">{md(p["catch"])}</span><span class="ic-kw">{md(p["keywords"])}</span></a>'
                     for i, p in enumerate(PAGES, 1))
     yuho5 = ''.join(f'<li><span class="where">{md(a)}<small>{md(b)}</small></span><span class="use">{md(c)}</span></li>' for a, b, c in IX.YUHO5)
@@ -305,6 +377,7 @@ def index_html():
   {matrix}
 </section>
 <section id="list" class="sec"><div class="sec-h"><span class="sec-no">02</span><h2>業界一覧</h2></div>
+  <p>13の業界それぞれに、業界の性格をそのまま人にしたキャラクターがいます。各ページでは、そのキャラが「キミの毎日のどこにいるか」から案内します。</p>
   <div class="ind-grid">{cards}</div>
 </section>
 <section id="companies" class="sec"><div class="sec-h"><span class="sec-no">03</span><h2>40社の有価証券報告書を横に並べると</h2></div>
@@ -319,9 +392,65 @@ def index_html():
 </section>
 <section id="howto" class="sec"><div class="sec-h"><span class="sec-no">04</span><h2>このガイドの使い方</h2></div>
   <ol class="howto">{howto}</ol>
-  <nav class="pager" aria-label="最初の業界"><span></span><a class="next" href="{PAGES[0]["id"]}.html"><small>最初の業界から読む</small>{short(PAGES[0])}</a></nav>
-</section>'''
+</section>
+{soudan_sec('05')}
+<nav class="pager" aria-label="最初の業界"><span></span><a class="next" href="{PAGES[0]["id"]}.html"><small>最初の業界から読む</small>{short(PAGES[0])}</a></nav>'''
     return shell('index', SITE, '13業界の仕事と稼ぎ方・2026年の動き・志望動機の作り方を、有価証券報告書とニュースの出典つきでまとめた就活用の業界研究ガイド。', secs, main)
+
+
+def about_html():
+    main = f'''
+<header class="hero"><p class="crumb"><a href="index.html">総まとめ</a> › サイトについて</p><h1>運営者・お問い合わせ</h1></header>
+<section id="who" class="sec"><div class="sec-h"><span class="sec-no">01</span><h2>運営者</h2></div>
+  <dl class="kv"><div><dt>サイト名</dt><dd>{SITE}（就活・志望動機用）</dd></div><div><dt>運営者</dt><dd>rei</dd></div><div><dt>作った理由</dt><dd>自分と友達・後輩の業界研究のため。ニュースと各社の有価証券報告書を読み、同じ型で13業界を整理しました。</dd></div><div><dt>情報の時点</dt><dd>{ASOF}。数字の出典は各ページの最後にあります。</dd></div></dl>
+</section>
+<section id="contact" class="sec"><div class="sec-h"><span class="sec-no">02</span><h2>お問い合わせ</h2></div>
+  <p>内容の誤り、古くなった数字、掲載についてのご連絡はこちらからお願いします。</p>
+  <p class="sent-msg" id="sent-msg" hidden>送信しました。ありがとうございます。</p>
+  <form class="contact" action="https://api.web3forms.com/submit" method="POST">
+    <input type="hidden" name="access_key" value="{WEB3FORMS_KEY}">
+    <input type="hidden" name="subject" value="【業界研究ガイド】お問い合わせ">
+    <input type="hidden" name="redirect" value="{BASE}about.html?sent=1#contact">
+    <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" hidden>
+    <label>お名前<input type="text" name="name" required autocomplete="name"></label>
+    <label>メールアドレス<input type="email" name="email" required autocomplete="email"></label>
+    <label>内容<textarea name="message" rows="6" required></textarea></label>
+    <button type="submit" class="btn">送信する</button>
+  </form>
+</section>'''
+    return shell('about', '運営者・お問い合わせ', f'{SITE}の運営者情報とお問い合わせ先。', [('who', '運営者'), ('contact', 'お問い合わせ')], main)
+
+
+def privacy_html():
+    items = [
+        ('広告について', ['このサイトは、第三者配信の広告サービス「Google アドセンス」を利用する予定です（利用を始めた時点からこの記載が有効になります）。',
+                     'Google などの広告配信事業者は、Cookie を使って、このサイトや他のサイトへの過去のアクセス情報に基づいて広告を表示することがあります。'
+                     'パーソナライズ広告は [Google の広告設定](https://adssettings.google.com/) で無効にできます。'
+                     'Cookie の扱いについては [Google のポリシーと規約](https://policies.google.com/technologies/ads?hl=ja) をご覧ください。']),
+        ('紹介リンク（アフィリエイト）について', ['ページ内で紹介するサービスの一部には、紹介料を受け取るリンクを含むことがあります。その場合は「PR」と表示します。',
+                     '紹介するのは、学生が無料で使えて、人に相談できるサービスに限ります。紹介料の有無で内容や順番を変えることはありません。']),
+        ('アクセス解析について', ['今後、アクセス数を把握するために Google アナリティクスを使う場合があります。データは Cookie を使って匿名で集められ、個人を特定するものではありません。']),
+        ('お問い合わせで受け取る情報', ['お問い合わせフォームで受け取ったお名前・メールアドレスは、返信のためだけに使い、第三者に渡すことはありません。法令に基づく場合を除きます。',
+                     'フォームの送信には Web3Forms を利用しています。']),
+        ('免責事項', ['数字や出来事は、各ページに書いた出典の時点のものです。できるかぎり正確にしていますが、内容を保証するものではありません。',
+                     '就職活動の判断は、必ず各社の最新の決算資料・採用ページで確認したうえで、ご自身で行ってください。このサイトの情報によって生じた損害について、運営者は責任を負いません。',
+                     'リンク先のサイトの内容については、各運営者にお問い合わせください。']),
+        ('著作権', ['文章・図・イラストの著作権は運営者にあります。引用する場合は出典としてこのサイトへのリンクを付けてください。各社のロゴや社名は、それぞれの会社の商標です。']),
+    ]
+    body = ''
+    for n, (h, ps) in enumerate(items, 1):
+        body += (f'<section id="p{n}" class="sec"><div class="sec-h"><span class="sec-no">{n:02d}</span><h2>{h}</h2></div>'
+                 + ''.join(f'<p>{md(x)}</p>' for x in ps) + '</section>')
+    main = (f'<header class="hero"><p class="crumb"><a href="index.html">総まとめ</a> › サイトについて</p>'
+            f'<h1>プライバシーポリシー・免責事項</h1><p class="lead">制定：2026年10月25日</p></header>{body}')
+    return shell('privacy', 'プライバシーポリシー・免責事項', f'{SITE}のプライバシーポリシー・広告・免責事項。',
+                 [(f'p{n}', h) for n, (h, _) in enumerate(items, 1)], main)
+
+
+def sitemap():
+    urls = [''] + [f'{p["id"]}.html' for p in PAGES] + ['about.html', 'privacy.html']
+    body = ''.join(f'<url><loc>{BASE}{u}</loc><lastmod>2026-10-25</lastmod></url>' for u in urls)
+    return f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{body}</urlset>\n'
 
 
 def main():
@@ -329,12 +458,17 @@ def main():
         shutil.rmtree(OUT)
     (OUT / 'assets').mkdir(parents=True)
     for f in (ROOT / 'assets').iterdir():
-        shutil.copy(f, OUT / 'assets' / f.name)
+        if f.is_dir():
+            shutil.copytree(f, OUT / 'assets' / f.name)
+        else:
+            shutil.copy(f, OUT / 'assets' / f.name)
     (OUT / 'index.html').write_text(index_html(), encoding='utf-8')
     for i, p in enumerate(PAGES):
         (OUT / f'{p["id"]}.html').write_text(page_html(p, i), encoding='utf-8')
     (OUT / '.nojekyll').write_text('')
-    (OUT / 'robots.txt').write_text('User-agent: *\nDisallow: /\n')
+    (OUT / 'about.html').write_text(about_html(), encoding='utf-8')
+    (OUT / 'privacy.html').write_text(privacy_html(), encoding='utf-8')
+    (OUT / 'sitemap.xml').write_text(sitemap(), encoding='utf-8')
     print(f'{len(PAGES) + 1} ページを書き出しました → {OUT}')
 
 

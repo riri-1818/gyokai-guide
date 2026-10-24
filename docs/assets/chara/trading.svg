@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="ショウ兄（地球儀）">
+  <g stroke="#1c2430" stroke-width="4" stroke-linejoin="round" stroke-linecap="round">
+    <ellipse cx="100" cy="189" rx="54" ry="7" fill="#1c2430" opacity=".12" stroke="none"/>
+    <path d="M58 186 Q56 134 100 126 Q144 134 142 186 Z" fill="#d9663a"/>
+    <path d="M84 128 L100 160 L116 128" fill="#fffdf8"/>
+    <path d="M100 136 L94 146 L100 170 L106 146 Z" fill="#1c2430" stroke-width="2"/>
+    <path d="M84 128 L76 150 L92 146 M116 128 L124 150 L108 146" fill="#b84f28" stroke-width="3"/>
+    <path d="M142 150 Q164 140 166 118" fill="none"/>
+    <circle cx="167" cy="110" r="11" fill="#fffdf8"/>
+    <path d="M176 96 q6 4 6 10 M180 90 q10 6 10 18" fill="none" stroke-width="2.5"/>
+    <circle cx="100" cy="74" r="50" fill="#7cc3e6"/>
+    <path d="M62 52 Q74 40 90 46 Q96 58 84 64 Q78 74 66 70 Q58 62 62 52 Z" fill="#e8834f" stroke-width="3"/>
+    <path d="M112 30 Q130 30 140 44 Q132 52 120 48 Q108 42 112 30 Z" fill="#e8834f" stroke-width="3"/>
+    <path d="M124 96 Q138 92 144 100 Q136 114 124 110 Z" fill="#e8834f" stroke-width="3"/>
+    <path d="M52 76 Q100 92 148 76" fill="none" stroke-width="2" opacity=".5"/>
+    <path d="M100 24 Q76 74 100 124" fill="none" stroke-width="2" opacity=".5"/>
+    <path d="M78 80 Q85 73 92 80" fill="none" stroke-width="4.5"/>
+    <circle cx="117" cy="79" r="6.5" fill="#1c2430" stroke="none"/><circle cx="119.2" cy="76.6" r="2.2" fill="#fff" stroke="none"/>
+    <ellipse cx="76" cy="94" rx="8" ry="5" fill="#f4a3a0" stroke="none" opacity=".85"/><ellipse cx="124" cy="94" rx="8" ry="5" fill="#f4a3a0" stroke="none" opacity=".85"/>
+    <path d="M90 98 Q102 110 114 98" fill="none" stroke-width="4"/>
+  </g>
+</svg>
