@@ -24,7 +24,7 @@ BASE = 'https://riri-1818.github.io/gyokai-guide/'
 
 # 広告とSearch Console。審査に申し込んだら、もらったIDをここに入れて build し直す。
 ADSENSE_CLIENT = ''   # 例: 'ca-pub-1234567890123456'（空なら広告のコードは出さない）
-SEARCH_CONSOLE = ''   # Search Console の「HTMLタグ」の content の値
+SEARCH_CONSOLE = 'QB6o8pXq2sH4qfSRkQOqgZA5gKZXzM9xfiC0SvluM5U'   # Search Console の「HTMLタグ」の content の値
 WEB3FORMS_KEY = '69066896-0033-4d7f-86ce-89e1c2710472'  # ワーホリ実務ノートと同じ。送信は本人のメールに届く
 
 
