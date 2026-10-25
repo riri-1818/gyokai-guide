@@ -23,7 +23,7 @@ ASOF = '2026年10月21日時点'
 BASE = 'https://riri-1818.github.io/gyokai-guide/'
 
 # 広告とSearch Console。審査に申し込んだら、もらったIDをここに入れて build し直す。
-ADSENSE_CLIENT = ''   # 例: 'ca-pub-1234567890123456'（空なら広告のコードは出さない）
+ADSENSE_CLIENT = 'ca-pub-6874249952104585'   # 例: 'ca-pub-1234567890123456'（空なら広告のコードは出さない）
 SEARCH_CONSOLE = 'QB6o8pXq2sH4qfSRkQOqgZA5gKZXzM9xfiC0SvluM5U'   # Search Console の「HTMLタグ」の content の値
 WEB3FORMS_KEY = '69066896-0033-4d7f-86ce-89e1c2710472'  # ワーホリ実務ノートと同じ。送信は本人のメールに届く
 
@@ -423,7 +423,7 @@ def about_html():
 
 def privacy_html():
     items = [
-        ('広告について', ['このサイトは、第三者配信の広告サービス「Google アドセンス」を利用する予定です（利用を始めた時点からこの記載が有効になります）。',
+        ('広告について', ['このサイトは、第三者配信の広告サービス「Google アドセンス」を利用しています。',
                      'Google などの広告配信事業者は、Cookie を使って、このサイトや他のサイトへの過去のアクセス情報に基づいて広告を表示することがあります。'
                      'パーソナライズ広告は [Google の広告設定](https://adssettings.google.com/) で無効にできます。'
                      'Cookie の扱いについては [Google のポリシーと規約](https://policies.google.com/technologies/ads?hl=ja) をご覧ください。']),
