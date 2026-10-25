@@ -6,7 +6,9 @@
 
 ## 直し方
 1. 文章や数字は `content/` の中のファイルを直す（金融は `fin.py`、他の業界は `grp_a.py`〜`grp_c.py`、総まとめは `index.py`）。
-   業界キャラクター（紹介・身近な場面・章ごとのひとこと）は `chara.py`、イラストは `assets/chara/<業界id>.svg`。数字は各業界ページに出典があるものだけを使う。
+   業界キャラクター（紹介・身近な場面・章ごとのひとこと）は `chara.py`、イラストは `assets/chara/<業界id>.svg`。
+   やさしい用語集（点線の説明と用語集ページ）は `glossary.py`、ニュースの「つまり？」は `tsumari.py`、無料の相談先は `partners.py`。
+   広告とSearch Consoleの設定は `build.py` の先頭（ADSENSE_CLIENT / SEARCH_CONSOLE）。数字は各業界ページに出典があるものだけを使う。
 2. `python3 build.py` を実行すると `docs/` にページが作り直される。
 3. `python3 tools/shots.py` でPC・スマホ幅の表示を撮影して確認（`_shots/` に保存）。
 4. `git add -A && git commit -m "..." && git push` で公開先に反映（1〜2分かかる）。

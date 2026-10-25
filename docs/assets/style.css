@@ -402,3 +402,54 @@ details[open] summary { margin-bottom: 8px; }
 .kv dt { font-size: 13.5px; font-weight: 700; color: var(--muted); }
 .kv dd { margin: 0; font-size: 15px; }
 @media (max-width: 520px) { .kv > div { grid-template-columns: minmax(0, 1fr); gap: 2px; } }
+
+/* 点線の言葉 */
+.gw { font: inherit; color: inherit; background: none; border: 0; padding: 0; margin: 0; cursor: help;
+  text-decoration: underline dotted var(--indigo); text-decoration-thickness: 2px; text-underline-offset: 4px; line-height: inherit; }
+.gw:hover, .gw[aria-expanded="true"] { background: var(--indigo-soft); border-radius: 3px; }
+.gl-hint { font-size: 13.5px; color: var(--muted); }
+.gl-hint::before { content: "…"; display: inline-block; margin-right: 6px; color: var(--indigo); font-weight: 700; text-decoration: underline dotted; text-underline-offset: 3px; }
+
+/* 説明カード */
+.gl-pop { position: fixed; align-content: start; z-index: 50; width: min(400px, calc(100vw - 24px)); max-height: min(70vh, 560px); overflow-y: auto;
+  background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px 12px;
+  box-shadow: 0 12px 32px rgba(10, 20, 40, .18); display: grid; gap: 10px; }
+.gl-pop.sheet { left: 0 !important; right: 0; bottom: 0; top: auto !important; width: 100%; max-height: 72vh; border-radius: 16px 16px 0 0;
+  padding: 16px 16px max(16px, env(safe-area-inset-bottom, 0px)); box-shadow: 0 -8px 32px rgba(10, 20, 40, .25); }
+.gp-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.gp-title { font-size: 19px; font-weight: 700; color: var(--indigo); line-height: 1.4; outline: none; }
+.gp-title small { display: block; font-size: 12px; font-weight: 500; color: var(--muted); }
+.gp-x { flex: none; width: 34px; height: 34px; border-radius: 50%; border: 0; background: var(--indigo-soft); color: var(--indigo); font-size: 20px; line-height: 1; cursor: pointer; }
+.gp-row { display: grid; gap: 2px; }
+.gp-lbl { font-size: 11.5px; font-weight: 700; color: var(--muted); letter-spacing: .06em; }
+.gp-row p { font-size: 14.5px; line-height: 1.8; }
+.gp-row.gp-main p { font-size: 16px; font-weight: 700; }
+.gp-row.gp-num { background: var(--both-bg); border-radius: 8px; padding: 8px 10px; }
+.gp-row.gp-num .gp-lbl { color: var(--both); }
+.gp-two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.gp-two .gp-row { border-radius: 8px; padding: 8px 10px; }
+.gp-two .gp-up { background: var(--up-bg); } .gp-two .gp-up .gp-lbl { color: var(--up); }
+.gp-two .gp-down { background: var(--down-bg); } .gp-two .gp-down .gp-lbl { color: var(--down); }
+.gp-two .gp-row p { font-size: 13.5px; }
+.gp-foot { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; font-weight: 700; padding-top: 4px; border-top: 1px solid var(--line); }
+@media (max-width: 420px) { .gp-two { grid-template-columns: minmax(0, 1fr); } }
+
+/* つまり？ */
+.tsumari { margin-top: 8px; background: var(--both-bg); background: color-mix(in srgb, var(--hl) 40%, var(--surface));
+  border-radius: 8px; padding: 10px 12px; font-size: 15px; line-height: 1.85; font-weight: 500; }
+.tsumari span { display: inline-block; font-size: 12px; font-weight: 700; color: var(--ink); background: var(--surface); border-radius: 4px; padding: 0 8px; margin-right: 8px; }
+
+/* 用語集ページ */
+.gfind { display: grid; gap: 4px; max-width: 420px; font-size: 13px; font-weight: 700; color: var(--muted); }
+.gfind input { font: inherit; font-size: 16px; font-weight: 400; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+.gcards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.gcard { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; display: grid; gap: 10px; align-content: start; scroll-margin-top: calc(var(--top-h) + 12px); }
+.gcard:target { border-color: var(--indigo); box-shadow: 0 0 0 3px var(--indigo-soft); }
+.gcard h3 { font-size: 18px; color: var(--indigo); }
+.gcard h3 small { display: block; font-size: 12px; font-weight: 500; color: var(--muted); }
+.gcard dl { margin: 0; display: grid; gap: 8px; }
+.gcard dt { font-size: 11.5px; font-weight: 700; color: var(--muted); letter-spacing: .06em; }
+.gcard dd { margin: 0; font-size: 14.5px; line-height: 1.8; }
+.gcard dl > div:first-child dd { font-weight: 700; }
+.gc-link { font-size: 13px; font-weight: 700; }
+@media (max-width: 760px) { .gcards { grid-template-columns: minmax(0, 1fr); } }

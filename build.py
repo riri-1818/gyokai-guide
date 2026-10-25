@@ -12,6 +12,8 @@ from content import index as IX
 from content.common import YUHO_COLS, GOAL_COLS
 from content.chara import CHARA
 from content import partners as PT
+from content import tsumari as TS
+from content.glossary import G as GLOSS, CATS as GCATS
 for _k, _c in CHARA.items():
     _c['id'] = _k
 
@@ -47,6 +49,69 @@ def short(p):
     return p.get('short', p['name'])
 
 
+# ---------- 用語の点線リンク ----------
+GBYK = {g['k']: g for g in GLOSS}
+_ALIAS = sorted(((html.escape(a, quote=False), g['k']) for g in GLOSS for a in g['al']), key=lambda x: -len(x[0]))
+_AMAP = dict(_ALIAS)
+
+
+def _pat(a):
+    p = re.escape(a)
+    if re.match(r'[A-Za-z]', a[0]):
+        p = r'(?<![A-Za-z0-9])' + p
+    if re.match(r'[A-Za-z0-9]', a[-1]):
+        p += r'(?![A-Za-z0-9])'
+    return p
+
+
+GL_RE = re.compile('|'.join(_pat(a) for a, _ in _ALIAS))
+# この中の文字には点線を引かない（リンク・見出し・ボタン・図の中など）
+GL_SKIP = {'a', 'h1', 'h2', 'h3', 'h4', 'button', 'script', 'style', 'svg', 'nav', 'summary', 'figcaption',
+           'thead', 'title', 'textarea', 'label', 'dt', 'figure'}
+
+
+def gloss_link(h, used_all):
+    """本文の用語に、章ごとに最初の1回だけ点線ボタンを付ける。used_all に使った用語の id を足す。"""
+    out, stack, used, pos = [], [], set(), 0
+
+    def sub(text):
+        def one(m):
+            k = _AMAP[m.group(0)]
+            if k in used:
+                return m.group(0)
+            used.add(k)
+            used_all.add(k)
+            return f'<button type="button" class="gw" data-g="{k}" aria-haspopup="dialog">{m.group(0)}</button>'
+        return GL_RE.sub(one, text)
+
+    for m in re.finditer(r'<(/?)([a-zA-Z0-9]+)[^>]*?(/?)>', h):
+        text = h[pos:m.start()]
+        out.append(text if stack else sub(text))
+        closing, name, selfclose = m.group(1), m.group(2).lower(), m.group(3)
+        if not closing and (name == 'section' or 'class="hero' in m.group(0)):
+            used.clear()
+        if name in GL_SKIP and not selfclose:
+            if closing:
+                if stack and stack[-1] == name:
+                    stack.pop()
+            else:
+                stack.append(name)
+        out.append(m.group(0))
+        pos = m.end()
+    out.append(h[pos:] if stack else sub(h[pos:]))
+    return ''.join(out)
+
+
+def gloss_data(keys):
+    data = {k: GBYK[k] for k in sorted(keys)}
+    return ('<script type="application/json" id="gl-data">'
+            + json.dumps(data, ensure_ascii=False).replace('</', '<\\/') + '</script>')
+
+
+def tsumari(text):
+    return f'<p class="tsumari"><span>つまり？</span>{md(text)}</p>' if text else ''
+
+
 # ---------- 部品 ----------
 def table(cols, rows, cls=''):
     head = ''.join(f'<th scope="col">{md(c)}</th>' for c in cols)
@@ -67,10 +132,10 @@ def timeline(rows):
     return f'<ol class="timeline">{items}</ol>'
 
 
-def news(items):
+def news(items, pid=''):
     out = ''
     for i, (title, paras) in enumerate(items, 1):
-        body = ''.join(f'<p>{md(p)}</p>' for p in paras)
+        body = ''.join(f'<p>{md(p)}</p>' for p in paras) + tsumari(TS.NEWS.get((pid, title)))
         out += f'<article class="news-item"><span class="news-no">{i}</span><div><h3>{md(title)}</h3>{body}</div></article>'
     return f'<div class="news">{out}</div>'
 
@@ -184,7 +249,7 @@ def block(b, page):
     if t == 'formula': return f'<div class="formula"><strong>型</strong><p>{md(b[1])}</p></div>'
     if t == 'table': return table(b[1], b[2])
     if t == 'timeline': return timeline(b[1])
-    if t == 'news': return news(b[1])
+    if t == 'news': return news(b[1], page['id'])
     if t == 'winds': return winds(b[1])
     if t == 'goals': return goals(b[1])
     if t == 'finds': return finds(b[1])
@@ -251,6 +316,7 @@ def sidebar(current, sections):
     if current == 'index':
         items += '<ul>' + ''.join(f'<li><a href="#{i}">{n}</a></li>' for i, n in sections) + '</ul>'
     items += '</li>'
+    items += f'<li><a href="yougo.html"{" aria-current=page" if current == "yougo" else ""}>やさしい用語集</a></li>'
     for p in PAGES:
         cur = p['id'] == current
         items += f'<li><a href="{p["id"]}.html"{" aria-current=page" if cur else ""}>{short(p)}</a>'
@@ -264,6 +330,9 @@ def sidebar(current, sections):
 
 def shell(current, title, desc, sections, main):
     full = SITE if current == 'index' else f'{title}｜{SITE}'
+    if current not in ('yougo', 'about', 'privacy'):
+        used = set()
+        main = gloss_link(main, used) + gloss_data(used)
     url = '' if current == 'index' else f'{current}.html'
     extra_head = ''
     if SEARCH_CONSOLE:
@@ -332,7 +401,7 @@ def page_html(p, i):
     pn += '</nav>'
     main = (f'<header class="hero"><p class="crumb"><a href="index.html">総まとめ</a> › {i + 1:02d} / 13</p>'
             f'<h1>{md(p["title"])}</h1><p class="catch"><span class="mark">{md(p["catch"])}</span></p>'
-            f'<p class="lead">{md(p["lead"])}</p>'
+            f'<p class="lead">{md(p["lead"])}</p><p class="gl-hint">点線の言葉を押すと、やさしい説明が出ます。まとめて読むなら<a href="yougo.html">用語集</a>へ。</p>'
             f'<nav class="toc" aria-label="このページの目次">{toc}</nav></header>{chara_card(p["id"])}{body}{pn}')
     return shell(p['id'], p['title'], p['lead'][:110], secs, main)
 
@@ -340,9 +409,9 @@ def page_html(p, i):
 def index_html():
     secs = [('waves', '5つの波'), ('list', '業界一覧'), ('companies', '40社の有報'), ('howto', '使い方'), ('soudan', '無料の相談先')]
     waves = ''.join(
-        f'<article class="wave"><h3>{md(n)}</h3><p>{md(w)}</p>'
+        f'<article class="wave"><h3>{md(n)}</h3><p>{md(w)}</p>{tsumari(TS.WAVES[j])}'
         f'<div class="w up"><span class="lbl">追い風の業界</span><p>{md(u)}</p></div>'
-        f'<div class="w down"><span class="lbl">逆風の業界</span><p>{md(d)}</p></div></article>' for n, w, u, d in IX.WAVES)
+        f'<div class="w down"><span class="lbl">逆風の業界</span><p>{md(d)}</p></div></article>' for j, (n, w, u, d) in enumerate(IX.WAVES))
     label = {'up': '追い風', 'down': '逆風', 'both': '両面'}
     mrows = ''
     for p in PAGES:
@@ -368,6 +437,7 @@ def index_html():
   <p class="crumb">{ASOF}</p>
   <h1>業界研究ガイド<small>就活・志望動機用</small></h1>
   <p class="lead">{md(IX.LEAD)}</p>
+  <p class="gl-hint">点線の言葉を押すと、やさしい説明が出ます。「政策金利って何？」から始めたい人は<a href="yougo.html">やさしい用語集</a>へ。</p>
   <nav class="toc" aria-label="このページの目次">{''.join(f'<a href="#{i}">{n}</a>' for i, n in secs)}</nav>
 </header>
 <section id="waves" class="sec"><div class="sec-h"><span class="sec-no">01</span><h2>全業界に共通する5つの波（2026年）</h2></div>
@@ -447,8 +517,40 @@ def privacy_html():
                  [(f'p{n}', h) for n, (h, _) in enumerate(items, 1)], main)
 
 
+def gloss_card(g):
+    rows = [('ひとことで', g['short'])]
+    if g.get('iikae'): rows.append(('友達に説明するなら', g['iikae']))
+    if g.get('tatoe'): rows.append(('たとえると', g['tatoe']))
+    if g.get('kankaku'): rows.append(('数字の感覚', g['kankaku']))
+    if g.get('up'): rows.append(g['up'])
+    if g.get('down'): rows.append(g['down'])
+    dl = ''.join(f'<div><dt>{md(a)}</dt><dd>{md(b)}</dd></div>' for a, b in rows)
+    yomi = f'<small>{md(g["yomi"])}</small>' if g.get('yomi') else ''
+    link = f'<a class="gc-link" href="{g["link"][1]}">{md(g["link"][0])}</a>' if g.get('link') else ''
+    words = html.escape(' '.join([g['t']] + g['al'] + [g.get('yomi', '')]), quote=True)
+    return (f'<article class="gcard" id="g-{g["k"]}" data-words="{words}"><h3>{md(g["t"])}{yomi}</h3>'
+            f'<dl>{dl}</dl>{link}</article>')
+
+
+def yougo_html():
+    secs = [(f'cat{i}', c) for i, c in enumerate(GCATS, 1)]
+    body = ''
+    for i, c in enumerate(GCATS, 1):
+        cards = ''.join(gloss_card(g) for g in GLOSS if g['cat'] == c)
+        body += (f'<section id="cat{i}" class="sec"><div class="sec-h"><span class="sec-no">{i:02d}</span><h2>{c}</h2></div>'
+                 f'<div class="gcards">{cards}</div></section>')
+    main = (f'<header class="hero"><p class="crumb"><a href="index.html">総まとめ</a> › 用語集</p>'
+            f'<h1>やさしい用語集</h1>'
+            f'<p class="lead">ニュースや有価証券報告書に出てくる言葉を、{len(GLOSS)}語、ふつうの言葉で説明します。'
+            f'「ひとことで」「友達に説明するなら」「数字の感覚」まで読めば、面接で自分の言葉で言い換えられます。</p>'
+            f'<label class="gfind"><span>言葉で探す</span><input type="search" id="gfind" placeholder="例：金利、ROE、関税" autocomplete="off"></label>'
+            f'<p class="note" id="gfind-none" hidden>見つかりませんでした。別の書き方でも試してみてください。</p>'
+            f'<nav class="toc" aria-label="分類">{"".join(f"<a href=#{i_}>{n}</a>" for i_, n in secs)}</nav></header>{body}')
+    return shell('yougo', 'やさしい用語集', f'政策金利・ROE・関税・有価証券報告書など、就活の業界研究で出てくる{len(GLOSS)}語を、大学生にも分かる言葉と数字の感覚で説明する用語集。', secs, main)
+
+
 def sitemap():
-    urls = [''] + [f'{p["id"]}.html' for p in PAGES] + ['about.html', 'privacy.html']
+    urls = ['', 'yougo.html'] + [f'{p["id"]}.html' for p in PAGES] + ['about.html', 'privacy.html']
     body = ''.join(f'<url><loc>{BASE}{u}</loc><lastmod>2026-10-25</lastmod></url>' for u in urls)
     return f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{body}</urlset>\n'
 
@@ -466,6 +568,7 @@ def main():
     for i, p in enumerate(PAGES):
         (OUT / f'{p["id"]}.html').write_text(page_html(p, i), encoding='utf-8')
     (OUT / '.nojekyll').write_text('')
+    (OUT / 'yougo.html').write_text(yougo_html(), encoding='utf-8')
     (OUT / 'about.html').write_text(about_html(), encoding='utf-8')
     (OUT / 'privacy.html').write_text(privacy_html(), encoding='utf-8')
     (OUT / 'sitemap.xml').write_text(sitemap(), encoding='utf-8')

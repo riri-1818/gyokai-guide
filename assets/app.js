@@ -230,4 +230,105 @@
   // ---- お問い合わせの送信後 ----
   var sent = document.getElementById('sent-msg');
   if (sent && /[?&]sent=1/.test(location.search)) sent.hidden = false;
+
+  // ---- 用語の説明カード（点線の言葉を押すと出る） ----
+  var glEl = document.getElementById('gl-data');
+  if (glEl) {
+    var GL = {};
+    try { GL = JSON.parse(glEl.textContent); } catch (e) { GL = {}; }
+    var pop = document.createElement('div');
+    pop.className = 'gl-pop';
+    pop.setAttribute('role', 'dialog');
+    pop.setAttribute('aria-modal', 'false');
+    pop.hidden = true;
+    document.body.appendChild(pop);
+    var opener = null;
+
+    var row = function (label, text, cls) {
+      var d = document.createElement('div');
+      d.className = 'gp-row' + (cls ? ' ' + cls : '');
+      var l = document.createElement('span'); l.className = 'gp-lbl'; l.textContent = label;
+      var p = document.createElement('p'); p.textContent = text;
+      d.appendChild(l); d.appendChild(p);
+      return d;
+    };
+    var close = function () {
+      if (pop.hidden) return;
+      pop.hidden = true;
+      if (opener) { opener.setAttribute('aria-expanded', 'false'); opener.focus(); }
+      opener = null;
+    };
+    var place = function (btn) {
+      if (window.innerWidth <= 700) { pop.classList.add('sheet'); pop.style.left = ''; pop.style.top = ''; return; }
+      pop.classList.remove('sheet');
+      var r = btn.getBoundingClientRect();
+      var w = pop.offsetWidth, hgt = pop.offsetHeight;
+      var left = Math.min(Math.max(12, r.left + r.width / 2 - w / 2), window.innerWidth - w - 12);
+      var top = r.bottom + 10;
+      if (top + hgt > window.innerHeight - 12 && r.top - hgt - 10 > 12) top = r.top - hgt - 10;
+      pop.style.left = left + 'px';
+      pop.style.top = Math.max(12, top) + 'px';
+    };
+    var open = function (btn) {
+      var g = GL[btn.getAttribute('data-g')];
+      if (!g) return;
+      if (opener && opener !== btn) opener.setAttribute('aria-expanded', 'false');
+      opener = btn;
+      btn.setAttribute('aria-expanded', 'true');
+      pop.innerHTML = '';
+      var head = document.createElement('div'); head.className = 'gp-head';
+      var h = document.createElement('p'); h.className = 'gp-title'; h.id = 'gp-title'; h.tabIndex = -1; h.textContent = g.t;
+      if (g.yomi) { var y = document.createElement('small'); y.textContent = g.yomi; h.appendChild(y); }
+      var x = document.createElement('button'); x.type = 'button'; x.className = 'gp-x'; x.setAttribute('aria-label', '閉じる'); x.textContent = '×';
+      x.addEventListener('click', close);
+      head.appendChild(h); head.appendChild(x);
+      pop.appendChild(head);
+      pop.setAttribute('aria-labelledby', 'gp-title');
+      pop.appendChild(row('ひとことで', g.short, 'gp-main'));
+      if (g.iikae) pop.appendChild(row('友達に説明するなら', g.iikae));
+      if (g.tatoe) pop.appendChild(row('たとえると', g.tatoe));
+      if (g.kankaku) pop.appendChild(row('数字の感覚', g.kankaku, 'gp-num'));
+      if (g.up || g.down) {
+        var two = document.createElement('div'); two.className = 'gp-two';
+        if (g.up) two.appendChild(row(g.up[0], g.up[1], 'gp-up'));
+        if (g.down) two.appendChild(row(g.down[0], g.down[1], 'gp-down'));
+        pop.appendChild(two);
+      }
+      var foot = document.createElement('div'); foot.className = 'gp-foot';
+      if (g.link) { var a1 = document.createElement('a'); a1.href = g.link[1]; a1.textContent = g.link[0]; foot.appendChild(a1); }
+      var a2 = document.createElement('a'); a2.href = 'yougo.html#g-' + g.k; a2.textContent = '用語集で見る'; foot.appendChild(a2);
+      pop.appendChild(foot);
+      pop.hidden = false;
+      place(btn);
+      h.focus({ preventScroll: true });
+    };
+    document.addEventListener('click', function (e) {
+      var b = e.target.closest('.gw');
+      if (b) { e.preventDefault(); if (opener === b && !pop.hidden) close(); else open(b); return; }
+      if (!pop.hidden && !pop.contains(e.target)) close();
+    });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+    window.addEventListener('resize', function () { if (opener && !pop.hidden) place(opener); });
+    window.addEventListener('scroll', function () { if (opener && !pop.hidden && !pop.classList.contains('sheet')) close(); }, { passive: true });
+  }
+
+  // ---- 用語集ページの絞り込み ----
+  var gfind = document.getElementById('gfind');
+  if (gfind) {
+    var cards = document.querySelectorAll('.gcard');
+    var none = document.getElementById('gfind-none');
+    gfind.addEventListener('input', function () {
+      var q = gfind.value.trim().toLowerCase();
+      var hit = 0;
+      cards.forEach(function (c) {
+        var ok = !q || c.getAttribute('data-words').toLowerCase().indexOf(q) !== -1 || c.textContent.toLowerCase().indexOf(q) !== -1;
+        c.hidden = !ok; if (ok) hit++;
+      });
+      document.querySelectorAll('.gcards').forEach(function (g) {
+        var sec = g.closest('.sec');
+        if (sec) sec.hidden = !Array.prototype.some.call(g.children, function (c) { return !c.hidden; });
+      });
+      if (none) none.hidden = hit > 0;
+    });
+  }
 })();
