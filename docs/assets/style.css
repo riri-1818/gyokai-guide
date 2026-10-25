@@ -453,3 +453,48 @@ details[open] summary { margin-bottom: 8px; }
 .gcard dl > div:first-child dd { font-weight: 700; }
 .gc-link { font-size: 13px; font-weight: 700; }
 @media (max-width: 760px) { .gcards { grid-template-columns: minmax(0, 1fr); } }
+
+/* この業界で働くときの考え方 */
+.think { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; counter-reset: tk; }
+.think li { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px 16px 58px; position: relative; display: grid; gap: 8px; counter-increment: tk; }
+.think li::before { content: counter(tk); position: absolute; left: 16px; top: 14px; width: 30px; height: 30px; border-radius: 50%; background: var(--indigo); color: var(--surface);
+  font-family: var(--font-display); font-size: 15px; display: grid; place-items: center; }
+.think h3 { font-size: 17.5px; }
+.think p { font-size: 15px; }
+.tk-ex { background: var(--indigo-soft); border-radius: 8px; padding: 10px 12px; font-size: 14px !important; line-height: 1.8; }
+.tk-ex span, .kk-ex .lbl { display: block; font-size: 11.5px; font-weight: 700; color: var(--indigo); letter-spacing: .06em; }
+.tk-common { display: grid; gap: 8px; border-top: 1px dashed var(--line); padding-top: 14px; }
+.tk-common > span { font-size: 13px; font-weight: 700; color: var(--muted); }
+.tk-common > div { display: flex; flex-wrap: wrap; gap: 6px; }
+.tk-common > div a { font-size: 13.5px; padding: 4px 12px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); text-decoration: none; color: var(--ink); }
+.tk-common > div a:hover { border-color: var(--indigo); color: var(--indigo); }
+.tk-all { font-size: 14px; font-weight: 700; }
+@media (max-width: 520px) { .think li { padding: 14px 14px 14px 52px; } .think li::before { left: 12px; } }
+
+/* 仕事の考え方・分析法のページ */
+.sec h2 small { display: block; font-size: 13.5px; font-weight: 500; color: var(--muted); margin-top: 2px; }
+.kk-short { font-size: 17px; font-weight: 700; line-height: 1.85; }
+.kk-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.kk-box { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; }
+.kk-box p, .kk-box li { font-size: 15px; line-height: 1.85; }
+.kk-box ol { margin: 0; padding-left: 1.3em; display: grid; gap: 4px; }
+.kk-ex { background: var(--indigo-soft); border-radius: 10px; padding: 14px 16px; display: grid; gap: 6px; }
+.kk-ex p { font-size: 15px; line-height: 1.85; }
+.kk-ex a { font-size: 13.5px; font-weight: 700; justify-self: start; }
+.kk-q { border: 2px solid var(--indigo); border-radius: 10px; padding: 14px 16px; display: grid; gap: 6px; background: var(--surface); }
+.kk-q .lbl { color: var(--indigo); }
+.kk-q > p { font-size: 15.5px; font-weight: 500; line-height: 1.85; }
+.kk-q details { font-size: 14.5px; }
+.kk-q summary { cursor: pointer; font-weight: 700; color: var(--indigo); font-size: 14px; }
+.kk-q details p { margin-top: 8px; background: var(--both-bg); border-radius: 8px; padding: 10px 12px; line-height: 1.85; }
+.kk-inds { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.kk-ind { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; text-decoration: none; color: var(--ink); display: grid; gap: 6px; align-content: start; }
+.kk-ind:hover { border-color: var(--cc); }
+.kk-ind .ic-head { margin: 0; }
+.kk-ind .ic-head .seal.sm { width: 40px; height: 40px; }
+.kk-ind ul { margin: 0; padding-left: 1.1em; font-size: 13.5px; line-height: 1.7; display: grid; gap: 2px; }
+.kk-ind, .kk-ind .seal { --cc: hsl(var(--h, 222) 58% 36%); --pic-bg: hsl(var(--h, 222) 55% 90%); }
+@media (prefers-color-scheme: dark) { .kk-ind, .kk-ind .seal { --cc: hsl(var(--h, 222) 70% 74%); --pic-bg: hsl(var(--h, 222) 30% 86%); } }
+@media (max-width: 900px) { .kk-inds { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 760px) { .kk-grid { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 520px) { .kk-inds { grid-template-columns: minmax(0, 1fr); } }

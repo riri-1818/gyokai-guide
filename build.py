@@ -13,6 +13,7 @@ from content.common import YUHO_COLS, GOAL_COLS
 from content.chara import CHARA
 from content import partners as PT
 from content import tsumari as TS
+from content import kangaekata as KK
 from content.glossary import G as GLOSS, CATS as GCATS
 for _k, _c in CHARA.items():
     _c['id'] = _k
@@ -289,6 +290,23 @@ def say(pid, sid):
     return f'<div class="say" style="--h:{c["hue"]}">{seal(c, "sm")}<p><b>{md(c["name"])}</b>{md(line)}</p></div>'
 
 
+# ---------- 仕事の考え方 ----------
+KBYK = {x['k']: x for x in KK.COMMON}
+
+
+def think_sec(pid, no):
+    c = CHARA[pid]
+    items = ''.join(f'<li><h3>{md(t)}</h3><p>{md(d)}</p><p class="tk-ex"><span>このサイトの例</span>{md(e)}</p></li>'
+                    for t, d, e in KK.BY_INDUSTRY[pid])
+    links = ''.join(f'<a href="kangaekata.html#k-{k}">{md(KBYK[k]["t"])}</a>' for k in KK.LINKS[pid])
+    lead = (f'<div class="say" style="--h:{c["hue"]}">{seal(c, "sm")}<p><b>{md(c["name"])}</b>'
+            f'この業界で働くなら、この3つを覚えておいて。どれも面接で「この仕事をどう考えているか」を話す材料になるよ。</p></div>')
+    return (f'<section id="think" class="sec"><div class="sec-h"><span class="sec-no">{no}</span>'
+            f'<h2>この業界で働くときの考え方</h2></div>{lead}<ol class="think">{items}</ol>'
+            f'<div class="tk-common"><span>あわせて読む：全業界で使える考え方</span><div>{links}</div>'
+            f'<a class="tk-all" href="kangaekata.html">仕事の考え方・分析法を全部見る</a></div></section>')
+
+
 # ---------- 無料の相談先 ----------
 def soudan():
     cards = ''
@@ -317,6 +335,10 @@ def sidebar(current, sections):
         items += '<ul>' + ''.join(f'<li><a href="#{i}">{n}</a></li>' for i, n in sections) + '</ul>'
     items += '</li>'
     items += f'<li><a href="yougo.html"{" aria-current=page" if current == "yougo" else ""}>やさしい用語集</a></li>'
+    items += f'<li><a href="kangaekata.html"{" aria-current=page" if current == "kangaekata" else ""}>仕事の考え方・分析法</a>'
+    if current == 'kangaekata':
+        items += '<ul>' + ''.join(f'<li><a href="#{i}">{n}</a></li>' for i, n in sections) + '</ul>'
+    items += '</li>'
     for p in PAGES:
         cur = p['id'] == current
         items += f'<li><a href="{p["id"]}.html"{" aria-current=page" if cur else ""}>{short(p)}</a>'
@@ -381,14 +403,15 @@ def shell(current, title, desc, sections, main):
 
 
 def page_html(p, i):
-    secs = [(s['id'], s['nav']) for s in p['sections']] + [('soudan', '無料の相談先'), ('sources', '出典')]
+    secs = [(s['id'], s['nav']) for s in p['sections']] + [('think', '働くときの考え方'), ('soudan', '無料の相談先'), ('sources', '出典')]
     toc = ''.join(f'<a href="#{i_}">{n}</a>' for i_, n in secs)
     body = ''
     for n, s in enumerate(p['sections'], 1):
         inner = ''.join(block(b, p) for b in s['blocks'])
         body += (f'<section id="{s["id"]}" class="sec"><div class="sec-h"><span class="sec-no">{n:02d}</span>'
                  f'<h2>{md(s["title"])}</h2></div>{say(p["id"], s["id"])}{inner}</section>')
-    body += soudan_sec(f'{len(p["sections"]) + 1:02d}')
+    body += think_sec(p['id'], f'{len(p["sections"]) + 1:02d}')
+    body += soudan_sec(f'{len(p["sections"]) + 2:02d}')
     src = ''.join(f'<li><a href="{html.escape(u)}" target="_blank" rel="noopener">{md(t)}</a></li>' for t, u in p['sources'])
     body += f'<section id="sources" class="sec"><div class="sec-h"><span class="sec-no">出典</span><h2>出典</h2></div><ul class="sources">{src}</ul></section>'
     prev = PAGES[i - 1] if i > 0 else None
@@ -438,6 +461,7 @@ def index_html():
   <h1>業界研究ガイド<small>就活・志望動機用</small></h1>
   <p class="lead">{md(IX.LEAD)}</p>
   <p class="gl-hint">点線の言葉を押すと、やさしい説明が出ます。「政策金利って何？」から始めたい人は<a href="yougo.html">やさしい用語集</a>へ。</p>
+  <p class="gl-hint kk-hint">どの業界でも使える考え方と分析法は<a href="kangaekata.html">仕事の考え方・分析法</a>に、例と練習問題つきでまとめています。</p>
   <nav class="toc" aria-label="このページの目次">{''.join(f'<a href="#{i}">{n}</a>' for i, n in secs)}</nav>
 </header>
 <section id="waves" class="sec"><div class="sec-h"><span class="sec-no">01</span><h2>全業界に共通する5つの波（2026年）</h2></div>
@@ -517,6 +541,38 @@ def privacy_html():
                  [(f'p{n}', h) for n, (h, _) in enumerate(items, 1)], main)
 
 
+def kangaekata_html():
+    secs = [(f'k-{x["k"]}', x['t']) for x in KK.COMMON] + [('by-industry', '業界ごとの考え方')]
+    body = ''
+    for n, x in enumerate(KK.COMMON, 1):
+        how = ''.join(f'<li>{md(h)}</li>' for h in x['how'])
+        body += (f'<section id="k-{x["k"]}" class="sec"><div class="sec-h"><span class="sec-no">{n:02d}</span>'
+                 f'<h2>{md(x["t"])}<small>{md(x["sub"])}</small></h2></div>'
+                 f'<p class="kk-short">{md(x["short"])}</p>'
+                 f'<div class="kk-grid"><div class="kk-box"><span class="lbl">なぜ大事？</span><p>{md(x["why"])}</p></div>'
+                 f'<div class="kk-box"><span class="lbl">やり方</span><ol>{how}</ol></div></div>'
+                 f'<div class="kk-ex"><span class="lbl">このサイトの例</span><p>{md(x["ex"])}</p>'
+                 f'<a href="{x["ex_link"][1]}">{md(x["ex_link"][0])}へ</a></div>'
+                 f'<div class="kk-q"><span class="lbl">やってみよう</span><p>{md(x["q"])}</p>'
+                 f'<details><summary>答えの例を見る</summary><p>{md(x["a"])}</p></details></div></section>')
+    rows = ''
+    for p in PAGES:
+        t3 = ''.join(f'<li>{md(t)}</li>' for t, _, _ in KK.BY_INDUSTRY[p['id']])
+        rows += (f'<a class="kk-ind" href="{p["id"]}.html#think" style="--h:{CHARA[p["id"]]["hue"]}">'
+                 f'<span class="ic-head">{seal(CHARA[p["id"]], "sm")}<b>{short(p)}</b></span><ul>{t3}</ul></a>')
+    body += (f'<section id="by-industry" class="sec"><div class="sec-h"><span class="sec-no">{len(KK.COMMON) + 1:02d}</span>'
+             f'<h2>業界ごとの考え方</h2></div><p>各業界ページの「この業界で働くときの考え方」の見出しだけを並べました。押すとその章に移ります。</p>'
+             f'<div class="kk-inds">{rows}</div></section>')
+    toc = ''.join(f'<a href="#{i}">{md(n)}</a>' for i, n in secs)
+    main = (f'<header class="hero"><p class="crumb"><a href="index.html">総まとめ</a> › 仕事の考え方</p>'
+            f'<h1>仕事の考え方・分析法</h1>'
+            f'<p class="lead">どの業界で働いても使う、考え方と分析の型を{len(KK.COMMON)}個まとめました。'
+            f'それぞれ「なぜ大事？」「やり方」「このサイトの例」「やってみよう」の順に読めます。'
+            f'例は、このサイトに載っている実際のニュースと数字です。面接の「なぜこの業界？」「この会社の課題は？」に答える道具にもなります。</p>'
+            f'<nav class="toc" aria-label="このページの目次">{toc}</nav></header>{body}')
+    return shell('kangaekata', '仕事の考え方・分析法', '稼ぎ方の分解、MECE、仮説思考、なぜなぜ、PEST、3C、バリューチェーンなど、どの業界でも使う考え方と分析法を、実際のニュースと数字の例と練習問題つきでまとめたページ。', secs, main)
+
+
 def gloss_card(g):
     rows = [('ひとことで', g['short'])]
     if g.get('iikae'): rows.append(('友達に説明するなら', g['iikae']))
@@ -550,7 +606,7 @@ def yougo_html():
 
 
 def sitemap():
-    urls = ['', 'yougo.html'] + [f'{p["id"]}.html' for p in PAGES] + ['about.html', 'privacy.html']
+    urls = ['', 'yougo.html', 'kangaekata.html'] + [f'{p["id"]}.html' for p in PAGES] + ['about.html', 'privacy.html']
     body = ''.join(f'<url><loc>{BASE}{u}</loc><lastmod>2026-10-25</lastmod></url>' for u in urls)
     return f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{body}</urlset>\n'
 
@@ -569,6 +625,7 @@ def main():
         (OUT / f'{p["id"]}.html').write_text(page_html(p, i), encoding='utf-8')
     (OUT / '.nojekyll').write_text('')
     (OUT / 'yougo.html').write_text(yougo_html(), encoding='utf-8')
+    (OUT / 'kangaekata.html').write_text(kangaekata_html(), encoding='utf-8')
     (OUT / 'about.html').write_text(about_html(), encoding='utf-8')
     (OUT / 'privacy.html').write_text(privacy_html(), encoding='utf-8')
     (OUT / 'sitemap.xml').write_text(sitemap(), encoding='utf-8')
